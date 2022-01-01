@@ -19,6 +19,10 @@ class BlockChain {
 
         return newBlock;
     }
+
+    getLastBlock(){
+        return this.chain[this.chain.length - 1];
+    }
 }
 
 module.exports = BlockChain;
