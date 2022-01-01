@@ -20,3 +20,5 @@ class BlockChain {
         return newBlock;
     }
 }
+
+module.exports = BlockChain;
