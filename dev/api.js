@@ -13,6 +13,8 @@ app.get('/blockchain', function (req, res) {
 });
 
 app.post('/transaction', function (req, res) {
+    const blockIndex = bitcoin.createTransaction(req.body.amount,req.body.sender,req.body.recepient);
+    res.send(`The transaction is created at block no ${blockIndex}`);
 });
 
 app.get('/mine', function (req, res) {
