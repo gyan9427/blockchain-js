@@ -4,9 +4,9 @@ class BlockChain {
         this.pendingTransactions = [];
     }
 
-    createNewBlock(nonce,previousBlockHash,hash){
+    createNewBlock(nonce, previousBlockHash, hash) {
         const newBlock = {
-            index: this.chain.length +1,
+            index: this.chain.length + 1,
             timestamp: Date.now(),
             transactions: this.pendingTransactions,
             nonce: nonce,
@@ -20,20 +20,20 @@ class BlockChain {
         return newBlock;
     }
 
-    getLastBlock(){
+    getLastBlock() {
         return this.chain[this.chain.length - 1];
     }
 
-    createTransaction(amount,sender,recipient){
-        const newTransaction={
+    createTransaction(amount, sender, recipient) {
+        const newTransaction = {
             amount: amount,
-            sender : sender,
-            recipient : recipient
+            sender: sender,
+            recipient: recipient
         }
 
         this.pendingTransactions.push(newTransaction)
 
-        return this.getLastBlock()['index'] +1;
+        return this.getLastBlock()['index'] + 1;
     }
 }
 
