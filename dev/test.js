@@ -16,7 +16,7 @@ const bitCoin = new BlockChain();
 
 
 const previousBlockHash = 'ASD23980KLKJAS090';
-const nonce = 908;
+// const nonce = 908;
 const currentBlockData = [
     {
         amount: 20,
@@ -35,4 +35,6 @@ const currentBlockData = [
     },
 ];
 
-console.log(bitCoin.hashBlock(previousBlockHash,currentBlockData,nonce));
+console.log(bitCoin.proofOfWork(previousBlockHash,currentBlockData));
+
+// console.log(bitCoin.hashBlock(previousBlockHash,currentBlockData,nonce));
