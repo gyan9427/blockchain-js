@@ -1,15 +1,19 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 
-app.get('/blockchain',function(req,res){
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/blockchain', function (req, res) {
 });
 
-app.post('/transaction',function(req,res){
+app.post('/transaction', function (req, res) {
 });
 
-app.get('/mine',function(req,res){
+app.get('/mine', function (req, res) {
 });
 
-app.listen(3000,function(){
+app.listen(3000, function () {
     console.log("listening to port 3000...");
 })
