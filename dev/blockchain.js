@@ -1,9 +1,13 @@
 const sha256 = require('sha256')
+const currentNodeUrl = process.argv[3]
 
 class BlockChain {
     constructor() {
         this.chain = [];
         this.pendingTransactions = [];
+
+        this.currentNodeUrl = currentNodeUrl;
+        this.networkNodes = [];
 
         //genesis block
         this.createNewBlock(100,'0','0');
