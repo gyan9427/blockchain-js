@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const { v1: uuidv1 } = require('uuid');
 const port = process.argv[2];
+const rp = require('request-promise');
 
 const nodeAddress = uuidv1().split('-').join('');
 
@@ -43,7 +44,24 @@ app.get('/mine', function (req, res) {
 
 //will register a new node and broadcast to the other nodes
 app.post('/register-and-broadcast-node',function(req,res){
+    const newNodeUrl = req.body.newNodeUrl;
+    if(bitcoin.networkNodes.indexOf(newNodeUrl) == -1)bitcoin.networkNodes.push(newNodeUrl);
 
+    const regNodesPromises = [];
+    bitcoin.networkNodes.forEach(networkNodeUrl => {
+        const requestOptions = {
+            uri: networkNodeUrl + 'register-node',
+            method: 'POST',
+            body: {newNodeUrl:newNodeUrl},
+            json:true
+        }
+
+        regNodesPromises.push(rp(requestOptions));
+    });
+
+    Promise.all(regNodesPromises).then(data => {
+
+    })
 });
 
 //will register the port address of new node being added no broadcast
