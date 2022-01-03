@@ -41,6 +41,21 @@ app.get('/mine', function (req, res) {
     })
 });
 
+//will register a new node and broadcast to the other nodes
+app.post('/register-and-broadcast-node',function(req,res){
+
+});
+
+//will register the port address of new node being added no broadcast
+app.post('/register-node',function(req,res){
+
+})
+
+//registers nodes requests in bulk
+app.post('/register-nodes-bulk',function(req,res){
+
+})
+
 app.listen(port, function () {
     console.log(`listening to port ${port}...`);
 })
