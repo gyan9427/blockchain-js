@@ -44,13 +44,19 @@ app.get('/mine', function (req, res) {
 
 //will register a new node and broadcast to the other nodes
 app.post('/register-and-broadcast-node',function(req,res){
+    
+    // assigning new node URL to newNodeUrl
     const newNodeUrl = req.body.newNodeUrl;
+
+    //if the passed one is not present in the list
     if(bitcoin.networkNodes.indexOf(newNodeUrl) == -1)bitcoin.networkNodes.push(newNodeUrl);
 
+    //create an array of regNodesPromises
     const regNodesPromises = [];
+
     bitcoin.networkNodes.forEach(networkNodeUrl => {
         const requestOptions = {
-            uri: networkNodeUrl + 'register-node',
+            uri: networkNodeUrl + '/register-node',
             method: 'POST',
             body: {newNodeUrl:newNodeUrl},
             json:true
@@ -60,8 +66,17 @@ app.post('/register-and-broadcast-node',function(req,res){
     });
 
     Promise.all(regNodesPromises).then(data => {
+        const bulkRegisterOptions = {
+            uri: networkNodeUrl + '/register-nodes-bulk',
+            method: 'POST',
+            body: { allNetworkNodes: [...bitcoin.networkNodes, bitcoin.currentNodeUrl]},
+            json: true
+        };
 
-    })
+        return rp(bulkRegisterOptions);
+    }).then(data => {
+        res.json({note: 'New node registered with network successfully.'});
+    });
 });
 
 //will register the port address of new node being added no broadcast
