@@ -46,6 +46,7 @@ app.get('/mine', function (req, res) {
 app.post('/register-and-broadcast-node',function(req,res){
     
     // assigning new node URL to newNodeUrl
+    
     const newNodeUrl = req.body.newNodeUrl;
 
     //if the passed one is not present in the list
@@ -63,7 +64,9 @@ app.post('/register-and-broadcast-node',function(req,res){
         }
 
         regNodesPromises.push(rp(requestOptions));
+        
     });
+    console.log(JSON.stringify(regNodesPromises));
     
     Promise.all(regNodesPromises).then(data => {
         //this registers url from  regNodesPromises
@@ -92,7 +95,8 @@ app.post('/register-node',function(req,res){
 
 //registers nodes requests in bulk
 app.post('/register-nodes-bulk',function(req,res){
-    const allNetworkNodes = bitcoin.networkNodes;
+    // console.log(bitcoin.networkNodes);
+    const allNetworkNodes = req.body.allNetworkNodes;
     allNetworkNodes.forEach(networkNodeUrl=>{
         const nodeNotAlreadyPresent = bitcoin.networkNodes.indexOf(networkNodeUrl) == -1;
         const notCurrentNode = bitcoin.currentNodeUrl !== networkNodeUrl;
