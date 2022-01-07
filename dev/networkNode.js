@@ -8,6 +8,7 @@ const rp = require('request-promise');
 const nodeAddress = uuidv1().split('-').join('');
 
 const Blockchain = require('./blockchain');
+const requestPromise = require("request-promise");
 const bitcoin = new Blockchain()
 
 app.use(bodyParser.json());
@@ -21,6 +22,27 @@ app.post('/transaction', function (req, res) {
     const blockIndex = bitcoin.createTransaction(req.body.amount,req.body.sender,req.body.recepient);
     res.send(`The transaction is created at block no ${blockIndex}`);
 });
+
+app.post('/transaction/broadcast', function (req,res){
+    const newTransaction = bitcoin.createTransaction(req.body.amount,req.body.sender,req.body.recepient);
+    bitcoin.networkNodes.push(newTransaction);
+
+    const requestPromises = [];
+    bitcoin.networkNodes.forEach(networkNodeUrl => {
+        const requestOptions = {
+            uri: networkNodeUrl + '/transaction',
+            method: 'POST',
+            body: newTransaction,
+            json: true
+        }
+
+        requestPromises.push(rp(requestOptions));
+    })
+
+    Promise.all(requestPromises).then(data=>{
+        res.json({ note:'A new transaction is created and broadcasted' });
+    })
+})
 
 app.get('/mine', function (req, res) {
     const lastBlock = bitcoin.getLastBlock();
