@@ -27,7 +27,7 @@ app.post('/transaction', function (req, res) {
 
 app.post('/transaction/broadcast', function (req,res){
     const newTransaction = bitcoin.createTransaction(req.body.amount,req.body.sender,req.body.recepient);
-    bitcoin.networkNodes.push(newTransaction);
+    bitcoin.addTransactionToPendingTransactions(newTransaction);
 
     const requestPromises = [];
     bitcoin.networkNodes.forEach(networkNodeUrl => {
@@ -37,11 +37,13 @@ app.post('/transaction/broadcast', function (req,res){
             body: newTransaction,
             json: true
         }
-
+        
         requestPromises.push(rp(requestOptions));
+        
     })
 
-    Promise.all(requestPromises).then(data=>{
+    Promise.all(requestPromises).then(data =>{
+        console.log("here");
         res.json({ note:'A new transaction is created and broadcasted' });
     })
 })
@@ -90,7 +92,7 @@ app.post('/register-and-broadcast-node',function(req,res){
         regNodesPromises.push(rp(requestOptions));
         
     });
-    console.log(JSON.stringify(regNodesPromises));
+    // console.log(JSON.stringify(regNodesPromises));
     
     Promise.all(regNodesPromises).then(data => {
         //this registers url from  regNodesPromises
