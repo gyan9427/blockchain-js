@@ -9,6 +9,7 @@ const nodeAddress = uuidv1().split('-').join('');
 
 const Blockchain = require('./blockchain');
 const requestPromise = require("request-promise");
+const { options } = require("nodemon/lib/config");
 const bitcoin = new Blockchain()
 
 app.use(bodyParser.json());
@@ -58,14 +59,43 @@ app.get('/mine', function (req, res) {
     const nonce = bitcoin.proofOfWork(previousBlockHash,currentBlockData);
     const blockHash = bitcoin.hashBlock(previousBlockHash,currentBlockData,nonce);
 
-    //reward for mining
-    bitcoin.createTransaction(12.5,"0.0",nodeAddress);
 
     const newBlock = bitcoin.createNewBlock(nonce,previousBlockHash,blockHash);
-    res.json({
-        note: "New Block Created Successfully",
-        block: newBlock
+
+    const requestPromises=[];
+    bitcoin.networkNodes.forEach(networkNodeUrl=>{
+        const requestOptions = {
+            uri: networkNodeUrl + "/receive-new-block",
+            method: 'POST',
+            body: {newBlock:newBlock},
+            json: true
+        }
+
+        requestPromises.push(rp(requestOptions));
     })
+
+    Promise.all(requestPromises)
+    .then(data => {
+        const requestOptions = {
+            uri: bitcoin.currentNodeUrl+'transaction/broadcast',
+            method: 'POST',
+            body: {
+                amount: 12.5,
+                sender:"0.0",
+                recepient: nodeAddress
+            },
+            json:true
+        }
+
+        return rp(requestOptions);
+    })
+    .then(data => {
+        res.json({
+            note: "New Block mined and broadcast successfully",
+            block: newBlock
+        })
+    })
+    
 });
 
 //will register a new node and broadcast to the other nodes
