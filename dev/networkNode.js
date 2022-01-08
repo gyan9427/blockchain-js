@@ -77,7 +77,7 @@ app.get('/mine', function (req, res) {
     Promise.all(requestPromises)
     .then(data => {
         const requestOptions = {
-            uri: bitcoin.currentNodeUrl+'transaction/broadcast',
+            uri: bitcoin.currentNodeUrl+'/transaction/broadcast',
             method: 'POST',
             body: {
                 amount: 12.5,
