@@ -245,7 +245,13 @@ app.get('/transaction/:transactionId',function(req,res){
 });
 
 app.get('/address/:address',function(req,res){
-
+    const address = req.params.address;
+    const transactionAddress = bitcoin.getTransactionAddress(address);
+    
+    res.json({
+        addressData: transactionAddress.transactions,
+        balance: transactionAddress.balance
+    })
 });
 
 // if(newLongestChain && bitcoin.chainIsValid(newLongestChain))
