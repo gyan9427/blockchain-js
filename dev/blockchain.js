@@ -88,6 +88,15 @@ class BlockChain {
     
         return validChain;
     }
+
+    getBlock(blockHash){
+        let correctBlock = null;
+        this.chain.forEach(block => {
+            if(block.hash === blockHash) correctBlock = block;
+        })
+
+        return correctBlock;
+    }
 }
 
 module.exports = BlockChain;
