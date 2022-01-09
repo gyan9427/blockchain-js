@@ -236,7 +236,12 @@ app.get('/block/:blockhash',function(req,res){
 });
 
 app.get('/transaction/:transactionId',function(req,res){
-
+    const transactionId = req.params.transactionId;
+    const block = bitcoin.getTransaction(transactionId);
+    res.json({
+        transactionId: block.transactionId,
+        block : block.block
+    })
 });
 
 app.get('/address/:address',function(req,res){
