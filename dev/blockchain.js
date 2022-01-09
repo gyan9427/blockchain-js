@@ -104,7 +104,7 @@ class BlockChain {
 
         this.chain.forEach(block => {
             block.transactions.forEach(transaction => {
-                if(transactionId == transaction.transactionId){
+                if(transactionId === transaction.transactionId){
                     correctTransaction = transactionId;
                     correctBlock = block;
                 }
