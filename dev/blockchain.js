@@ -116,6 +116,30 @@ class BlockChain {
             block : correctBlock
         }
     }
+
+    getTransactionAddress(address){
+        let transactionAddress = [];
+
+        this.chain.forEach(block => {
+            block.transactions.forEach(transaction => {
+                if(transaction.recipient === address || transaction.sender === address){
+                    transactionAddress.push(transaction);
+                }
+            })
+        })
+
+        let balance = 0;
+
+        transactionAddress.forEach(transaction => {
+            if(transaction.recipient === address) balance += transaction.amount;
+            else balance -= transaction.amount;
+        })
+
+        return{
+            transactions : transactionAddress,
+            balance : balance
+        }
+    }
 }
 
 module.exports = BlockChain;
