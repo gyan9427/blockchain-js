@@ -226,6 +226,19 @@ app.get('/consensus',function(req,res){
 		}
 	});
 });
+
+app.get('/block/:blockhash',function(req,res){
+
+});
+
+app.get('/transaction/:transactionId',function(req,res){
+
+});
+
+app.get('/address/:address',function(req,res){
+
+});
+
 // if(newLongestChain && bitcoin.chainIsValid(newLongestChain))
 app.listen(port, function () {
     console.log(`listening to port ${port}...`);
