@@ -97,6 +97,25 @@ class BlockChain {
 
         return correctBlock;
     }
+
+    getTransaction(transactionId){
+        let correctTransaction = null;
+        let correctBlock = null;
+
+        this.chain.forEach(block => {
+            block.transactions.forEach(transaction => {
+                if(transactionId == transaction.transactionId){
+                    correctTransaction = transactionId;
+                    correctBlock = block;
+                }
+            })
+        })
+
+        return {
+            transactionId : correctTransaction,
+            block : correctBlock
+        }
+    }
 }
 
 module.exports = BlockChain;
