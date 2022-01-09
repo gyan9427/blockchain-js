@@ -254,6 +254,10 @@ app.get('/address/:address',function(req,res){
     })
 });
 
+app.get('/block-explorer',(req,res) => {
+    res.sendFile('./block-explorer/index.html',{ root:__dirname })
+})
+
 // if(newLongestChain && bitcoin.chainIsValid(newLongestChain))
 app.listen(port, function () {
     console.log(`listening to port ${port}...`);
